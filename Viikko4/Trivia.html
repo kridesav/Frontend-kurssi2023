@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Root container for react components -->
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        function Trivia() {
+            const [question, setQuestion] = useState('');
+
+                useEffect(() => {
+                }, []);
+
+                const fetchQuestion = async () => {
+                    try {
+                        const response = await fetch("https://opentdb.com/api.php?amount=1");
+                        const data = await response.json();
+
+                        setQuestion(data.results[0].question);
+                    }
+                    catch (error) {
+                        console.error(error);
+                    }
+                }
+                return (
+                        <div>
+                        <p>{question}</p>
+                        <button onClick={fetchQuestion}>New Question</button>
+                        </div>
+                );
+            }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<div><Trivia /></div>);    
+    </script>
+</body>
+
+</html>

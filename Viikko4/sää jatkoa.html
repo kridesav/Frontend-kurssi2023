@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Root container for react components -->
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        function Sää() {
+            const [temperature, setTemperature] = useState('');
+            const [weather, setWeather] = useState('');
+            const [image, setImage] = useState('');
+            const [location, setLocation] = useState('');
+            const [submitted, setSubmitted] = useState(false);
+
+            useEffect(() => {
+            }, []);
+
+            const fetchWeather = async () => {
+                try {
+                    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&APPID=36f9bf7239d202af7c7c60011131ad36`);
+                    const data = await response.json();
+                    console.log(data);
+
+                    setTemperature(data.main.temp);
+                    setWeather(data.weather[0].description);
+                    setImage(data.weather[0].icon);
+                    setSubmitted(true);
+                }
+                catch (error) {
+                    console.error(error);
+                }
+            };
+            if (!submitted) {
+                return (
+                    <div>
+                        <label>
+                            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+                        </label>
+                        <button onClick={fetchWeather}>Submit</button>
+                    </div>
+                );
+            }
+
+            return (
+                <div>
+                    <label>
+                        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+                    </label>
+                    <button onClick={fetchWeather}>Submit</button>
+                    <h1>{location} weather</h1>
+                    <p>Temperature: {temperature} Celsius</p>
+                    <p>Weather: {weather}</p>
+                    <img src={`https://openweathermap.org/img/wn/${image}.png`} alt={`Weather icon for ${weather}`} />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<div><Sää /></div>);    
+    </script>
+</body>
+
+</html>
