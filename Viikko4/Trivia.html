@@ -19,10 +19,6 @@
         const { useState, useEffect } = React;
         function Trivia() {
             const [question, setQuestion] = useState('');
-
-                useEffect(() => {
-                }, []);
-
                 const fetchQuestion = async () => {
                     try {
                         const response = await fetch("https://opentdb.com/api.php?amount=1");

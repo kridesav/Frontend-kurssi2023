@@ -22,10 +22,6 @@
             const [answer, setAnswer] = useState('');
             const [showAnswer, setShowAnswer] = useState(false);
 
-
-            useEffect(() => {
-            }, []);
-
             const fetchQuestion = async () => {
                 try {
                     const response = await fetch("https://opentdb.com/api.php?amount=1");
