@@ -16,15 +16,19 @@
     <script type="text/babel">
         const RestList = () => {
             const [listItems, setListItems] = React.useState([]);
+            const [input, setInput] = React.useState('');
 
             React.useEffect(() => {
-                fetch('https://api.github.com/search/repositories?q=react')
+            }, [])
+
+            const fetchInput = async => {
+                fetch(`https://api.github.com/search/repositories?q=${input}`)
                     .then(response => response.json())
                     .then(responseData => {
                         setListItems(responseData.items)
                     })
                     .catch(err => console.error(err))
-            }, [])
+            }
 
             const itemRows = listItems.map((repositories) =>
                 <tr key={repositories.id}>
@@ -36,6 +40,12 @@
             return (
                 <div>
                     <h2>Repositories</h2>
+                    <div>
+                        <label>
+                            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+                        </label>
+                        <button onClick={fetchInput}>Search</button>
+                    </div>
                     <table>
                         <tbody>
                             <tr><th>Name</th><th>URL</th></tr>
